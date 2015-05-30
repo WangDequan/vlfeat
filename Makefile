@@ -294,6 +294,10 @@ else
 Q=@
 endif
 
+# Greater or equal: returns the empty string if $1 >= $2, otherwise returns 'false',
+# where the arguments are integer numbers
+gt = $(shell if [ "$(1)" -lt "$(2)" ] ; then echo false ; fi)
+
 # rule to create a directory
 .PRECIOUS: %/.dirstamp
 %/.dirstamp :
@@ -317,15 +321,15 @@ endef
 # inclued by make as auto-dependencies) and the list of files to be
 # added to the binary distribution.
 
+.PHONY: clean, archclean, distclean, info, help
+no_dep_targets := clean archclean distclean info help
+
 include make/dll.mak
 include make/bin.mak
 include make/matlab.mak
 include make/octave.mak
 include make/doc.mak
 include make/dist.mak
-
-.PHONY: clean, archclean, distclean, info, help
-no_dep_targets += clean archclean distclean info help
 
 clean:
 	rm -f  `find . -name '*~'`
